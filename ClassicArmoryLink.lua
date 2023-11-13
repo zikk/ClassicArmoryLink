@@ -92,7 +92,6 @@ local function CreateArmoryButton(parentFrame, isInspect)
             end
         elseif isInspect then
             local selectedTab = PanelTemplates_GetSelectedTab(InspectFrame)
-            print(selectedTab)
             if selectedTab == 1 then
                 armoryButton:Show()
             else
