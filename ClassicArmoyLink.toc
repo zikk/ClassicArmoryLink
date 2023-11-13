@@ -1,0 +1,6 @@
+## Interface: 30403
+## Title: ClassicArmoryLink
+## Notes: Adds an Armory button to the character profile.
+## Author: zikk
+## Version: 1.0
+ClassicArmoryLink.lua
