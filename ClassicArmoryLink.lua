@@ -76,6 +76,7 @@ local function CreateArmoryButton(parentFrame, isInspect)
 
     if isInspect then
         armoryButton:SetPoint("TOPLEFT", parentFrame, "TOPLEFT", 160, -50)
+        armoryButton:Hide() -- Start hidden for Inspect Frame
     else
         armoryButton:SetPoint("TOPRIGHT", parentFrame, "TOPLEFT", 135, -76)
         armoryButton:Hide() -- Start hidden for Character Frame
@@ -89,16 +90,25 @@ local function CreateArmoryButton(parentFrame, isInspect)
             else
                 armoryButton:Hide()
             end
+        elseif isInspect then
+            local selectedTab = PanelTemplates_GetSelectedTab(InspectFrame)
+            print(selectedTab)
+            if selectedTab == 1 then
+                armoryButton:Show()
+            else
+                armoryButton:Hide()
+            end
         end
     end
 
     if not isInspect then
         hooksecurefunc("CharacterFrameTab_OnClick", UpdateButtonVisibility)
         CharacterFrame:HookScript("OnShow", UpdateButtonVisibility)
+    elseif isInspect then
+        hooksecurefunc("InspectSwitchTabs", UpdateButtonVisibility)
+        InspectFrame:HookScript("OnShow", UpdateButtonVisibility)
     end
 
-    -- Button visibility tied to the parent frame's visibility
-    armoryButton:SetShown(parentFrame:IsShown())
     parentFrame:HookScript("OnShow", function() armoryButton:Show() end)
     parentFrame:HookScript("OnHide", function() armoryButton:Hide() end)
 
