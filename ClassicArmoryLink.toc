@@ -2,5 +2,7 @@
 ## Title: ClassicArmoryLink
 ## Notes: Adds an Armory button to the character profile.
 ## Author: zikk
-## Version: 1.0
+## Version: 1.1
+EuRealmsList.lua
+UsRealmsList.lua
 ClassicArmoryLink.lua
