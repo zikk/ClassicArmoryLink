@@ -1,4 +1,5 @@
 local regionName = GetCurrentRegionName():lower()
+local lastInspectedGUID = nil
 local realms
 
 if regionName == "eu" then
@@ -22,7 +23,9 @@ function GetRealmSlugByName(realmName)
 end
 
 local function CreateArmoryFrame(characterName, realmName)
-     -- Close the existing frame if it's open
+    print(characterName)
+    print(realmName)
+    -- Close the existing frame if it's open
     if currentArmoryFrame and currentArmoryFrame:IsShown() then
         currentArmoryFrame:Hide()
     end
@@ -115,11 +118,16 @@ local function CreateArmoryButton(parentFrame, isInspect)
         local characterName, realmName
 
         if isInspect then
-            characterName, realmName = UnitName("target", true)
+            _, _, _, _, _, characterName, realmName = GetPlayerInfoByGUID(lastInspectedGUID)
         else
             characterName = UnitName("player", true)
         end
-        local armoryFrame = CreateArmoryFrame(characterName, realmName or GetRealmName())
+
+        if not realmName or realmName == "" then
+            realmName = GetRealmName()
+        end
+
+        local armoryFrame = CreateArmoryFrame(characterName, realmName)
         armoryFrame:Show()
     end)
 end
@@ -131,6 +139,8 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1)
     if event == "ADDON_LOADED" and arg1 == "ClassicArmoryLink" then
         CreateArmoryButton(CharacterFrame, false)
     elseif event == "INSPECT_READY" then
+        -- print(arg1)
+        lastInspectedGUID = arg1
         CreateArmoryButton(InspectFrame, true)
     end
 end)
