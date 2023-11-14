@@ -1,4 +1,4 @@
-EuRealmsList = {
+Cal.EuRealmsList = {
   {
     id = 4749,
     slug = "earthshaker",

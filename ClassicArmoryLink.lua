@@ -1,36 +1,14 @@
 local regionName = GetCurrentRegionName():lower()
 local lastInspectedGUID = nil
-local realms
-
-if regionName == "eu" then
-    realms = EuRealmsList
-elseif regionName == "us" then
-    realms = UsRealmsList
-end
-
--- Global variable to keep track of the current armory frame
 local currentArmoryFrame = nil
 
-function GetRealmSlugByName(realmName)
-    for _, realm in ipairs(realms) do
-        for _, name in pairs(realm.name) do
-            if name == realmName then
-                return realm.slug
-            end
-        end
-    end
-    -- return nil -- Return nil if no match is found
-end
-
 local function CreateArmoryFrame(characterName, realmName)
-    print(characterName)
-    print(realmName)
     -- Close the existing frame if it's open
     if currentArmoryFrame and currentArmoryFrame:IsShown() then
         currentArmoryFrame:Hide()
     end
 
-    local realmSlug = GetRealmSlugByName(realmName)
+    local realmSlug = Cal.GetRealmSlugByName(realmName)
 
     -- Generate the URL
     local armoryURL = string.format("https://classic-armory.info/%s/classic/%s/%s", regionName, realmSlug, characterName:lower())
@@ -144,3 +122,23 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1)
         CreateArmoryButton(InspectFrame, true)
     end
 end)
+
+local function SlashCommandHandler(param)
+    if not UnitExists("target") then
+        return
+    end
+
+    local realmName
+
+    local characterName, realmName = UnitName("target", true)
+
+    if not realmName or realmName == "" then
+        realmName = GetRealmName()
+    end
+
+    local armoryFrame = CreateArmoryFrame(characterName, realmName)
+    armoryFrame:Show()
+end
+
+SLASH_CLASSICARMORYLINK1 = "/cal"
+SlashCmdList["CLASSICARMORYLINK"] = SlashCommandHandler

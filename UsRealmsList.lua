@@ -1,4 +1,4 @@
-UsRealmsList = {
+Cal.UsRealmsList = {
   {
     id = 4795,
     slug = 'angerforge',
