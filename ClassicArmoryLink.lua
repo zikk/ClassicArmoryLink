@@ -35,7 +35,7 @@ local function CreateArmoryFrame(characterName, realmName)
     local armoryURL = armoryURL -- Replace with your desired URL
     editBox:SetText(armoryURL)
     editBox:HighlightText()
-    editBox:SetAutoFocus(false)
+    editBox:SetAutoFocus(true)
     editBox:SetScript("OnEscapePressed", function() armoryFrame:Hide() end)
 
     -- Create a Close Button
