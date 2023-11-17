@@ -15,7 +15,7 @@ local function CreateArmoryFrame(characterName, realmName)
 
     local armoryFrame = CreateFrame("Frame", "ArmoryFrame", UIParent, "BackdropTemplate")
     armoryFrame:SetPoint("CENTER")
-    armoryFrame:SetSize(600, 70)
+    armoryFrame:SetSize(600, 80)
     armoryFrame:SetBackdrop({
         bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
         edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
@@ -37,6 +37,12 @@ local function CreateArmoryFrame(characterName, realmName)
     editBox:HighlightText()
     editBox:SetAutoFocus(true)
     editBox:SetScript("OnEscapePressed", function() armoryFrame:Hide() end)
+
+    -- give the editbox a title
+    local title = armoryFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+    title:SetPoint("BOTTOM", editBox, "TOP", 0, 5)
+    title:SetText("Classic Armory Link")
+
 
     -- Create a Close Button
     local closeButton = CreateFrame("Button", "ArmoryCloseButton", armoryFrame, "UIPanelCloseButton")
@@ -117,7 +123,6 @@ eventFrame:SetScript("OnEvent", function(self, event, arg1)
     if event == "ADDON_LOADED" and arg1 == "ClassicArmoryLink" then
         CreateArmoryButton(CharacterFrame, false)
     elseif event == "INSPECT_READY" then
-        -- print(arg1)
         lastInspectedGUID = arg1
         CreateArmoryButton(InspectFrame, true)
     end
@@ -129,6 +134,11 @@ local function SlashCommandHandler(param)
     end
 
     local realmName
+
+    if not UnitIsPlayer("target") then
+        print("Target is not a player.")
+        return
+    end
 
     local characterName, realmName = UnitName("target", true)
 
